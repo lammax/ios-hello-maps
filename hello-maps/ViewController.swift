@@ -37,8 +37,6 @@ class ViewController: UIViewController, MKMapViewDelegate {
         
         self.mapTypeControl.addTarget(self, action: #selector(mapTypeChange), for: .valueChanged)
         
-        self.addPointOfInterest()
-        
     }
     
     @objc func mapTypeChange(segmentedControl: UISegmentedControl) {
@@ -56,12 +54,17 @@ class ViewController: UIViewController, MKMapViewDelegate {
         
     }
     
-    private func addPointOfInterest() {
-        self.mapView.addAnnotation(
-            CustomAnnotation(
-                title: "Somewhere in USA",
-                coordinate: CLLocationCoordinate2D(latitude: 37.334395, longitude: -122.040012))
-        )
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKCircle {
+            let circleRenderer = MKCircleRenderer(circle: overlay as! MKCircle)
+            circleRenderer.lineWidth = 1.0
+            circleRenderer.strokeColor = UIColor.purple
+            circleRenderer.fillColor = UIColor.white
+            circleRenderer.alpha = 0.5
+            return circleRenderer
+        }
+        
+        return MKOverlayRenderer()
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -165,14 +168,24 @@ class ViewController: UIViewController, MKMapViewDelegate {
                 return
             }
             
-            self.addPlacemarkToMap(placeMark: placeMark, title: addr)
+            self.addPointOfInterest(coordinate: placeMark.location?.coordinate, title: addr)
             
         }
     }
     
-    private func addPlacemarkToMap(placeMark: CLPlacemark, title: String) {
-        guard let coordinate = placeMark.location?.coordinate else { return }
-        self.mapView.addAnnotation(CustomAnnotation(title: title, coordinate: coordinate))
+    private func addPointOfInterest(coordinate: CLLocationCoordinate2D?, title: String?) {
+        let annotation = CustomAnnotation(
+            title: title,
+            coordinate: coordinate
+        )
+        
+        self.mapView.addAnnotation(annotation)
+        
+        addFancyRegion(annotation: annotation)
+    }
+    
+    private func addFancyRegion(annotation: CustomAnnotation) {
+        self.mapView.addOverlay(MKCircle(center: annotation.coordinate, radius: 1000)) //1000 meters
     }
     
 }
