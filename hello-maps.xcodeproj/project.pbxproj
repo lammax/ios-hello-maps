@@ -13,6 +13,7 @@
 		047E6107216249F7009B53AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047E6106216249F7009B53AC /* Assets.xcassets */; };
 		047E610A216249F7009B53AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 047E6108216249F7009B53AC /* LaunchScreen.storyboard */; };
 		047E611221625DCA009B53AC /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E611121625DCA009B53AC /* CustomAnnotation.swift */; };
+		047E61142163806F009B53AC /* CustomCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E61132163806F009B53AC /* CustomCalloutView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		047E6109216249F7009B53AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		047E610B216249F7009B53AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		047E611121625DCA009B53AC /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
+		047E61132163806F009B53AC /* CustomCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalloutView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				047E6108216249F7009B53AC /* LaunchScreen.storyboard */,
 				047E610B216249F7009B53AC /* Info.plist */,
 				047E611121625DCA009B53AC /* CustomAnnotation.swift */,
+				047E61132163806F009B53AC /* CustomCalloutView.swift */,
 			);
 			path = "hello-maps";
 			sourceTree = "<group>";
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				047E61142163806F009B53AC /* CustomCalloutView.swift in Sources */,
 				047E6102216249F4009B53AC /* ViewController.swift in Sources */,
 				047E6100216249F4009B53AC /* AppDelegate.swift in Sources */,
 				047E611221625DCA009B53AC /* CustomAnnotation.swift in Sources */,

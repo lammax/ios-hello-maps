@@ -64,13 +64,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
         
         if customAnnotationView == nil {
             customAnnotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "CustomAnnotationView")
-            //customAnnotationView?.glyphText = "😎"
-            //customAnnotationView?.markerTintColor = UIColor.black
-            //customAnnotationView?.glyphImage = UIImage(named: "custom_geotag")
-            customAnnotationView?.canShowCallout = true
-            
-            configureAnnotationView(customAnnotationView!)
-            
+            customAnnotationView?.canShowCallout = false
         } else {
             customAnnotationView?.annotation = annotation
         }
@@ -83,46 +77,21 @@ class ViewController: UIViewController, MKMapViewDelegate {
         
     }
     
-    private func configureAnnotationView(_ annotation : MKAnnotationView) {
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        view.subviews.forEach { (subview) in
+            subview.removeFromSuperview()
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-//        let view = UIView(frame: CGRect.zero )
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.widthAnchor.constraint(equalToConstant:  200).isActive = true
-//        view.heightAnchor.constraint(equalToConstant:  200).isActive = true
-//        view.backgroundColor = UIColor.red
-//        annotation.leftCalloutAccessoryView = UIImageView(image: UIImage(named: "custom_geotag")) as UIView
-//        annotation.rightCalloutAccessoryView = UIImageView(image: UIImage(named: "custom_geotag")) as UIView
-//        annotation.detailCalloutAccessoryView = view
-        
-        let snapShotSize = CGSize(width: 200, height: 300)
-        
-        let snapShotView = UIView(frame: CGRect.zero )
-        snapShotView .translatesAutoresizingMaskIntoConstraints = false
-        snapShotView.widthAnchor.constraint(equalToConstant:  snapShotSize.width).isActive = true
-        snapShotView.heightAnchor.constraint(equalToConstant:  snapShotSize.height).isActive = true
-        let options = MKMapSnapshotter.Options()
-        options.size = snapShotSize
-        options.mapType = .satelliteFlyover
-        options.camera = MKMapCamera(lookingAtCenter: (annotation.annotation?.coordinate)! , fromDistance: 10, pitch: 65, heading: 0)
-        
-        let snapShotter = MKMapSnapshotter(options: options)
-        snapShotter.start { (snapShot, error) in
-            if let error = error {
-                print(error.localizedDescription)
-                return
-            }
-            
-            if let snapshot = snapShot {
-                let imageView = UIImageView(frame: CGRect(origin: CGPoint.zero, size: snapShotSize))
-                imageView.image = snapshot.image
-                snapShotView.addSubview(imageView)
-            }
-            
+        guard let annotation = view.annotation as? CustomAnnotation else {
+            return
         }
         
-        annotation.detailCalloutAccessoryView = snapShotView
+        //create custom callout
+        CustomCalloutView(annotation: annotation).add(to: view)
 
-        
     }
     
     /*func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
@@ -132,8 +101,9 @@ class ViewController: UIViewController, MKMapViewDelegate {
 
     @IBAction func addAnnotationClick(_ sender: UIButton) {
         let annotation = CustomAnnotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: 55.7525497882909, longitude: 37.6231188699603)
-            //self.mapView.userLocation.coordinate
+        annotation.coordinate = self.mapView.userLocation.coordinate
+            //CLLocationCoordinate2D(latitude: 55.7525497882909, longitude: 37.6231188699603)
+            
         annotation.title = "Moscow"
         annotation.subtitle = "Kremlin"
         annotation.imageURL = "custom_geotag"
