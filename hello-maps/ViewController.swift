@@ -60,7 +60,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
             return nil
         }
         
-        var customAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "CustomAnnotationView") as? MKAnnotationView
+        var customAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "CustomAnnotationView")
         
         if customAnnotationView == nil {
             customAnnotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "CustomAnnotationView")
@@ -110,5 +110,67 @@ class ViewController: UIViewController, MKMapViewDelegate {
         self.mapView.addAnnotation(annotation)
     }
     
-}
+    @IBAction func addAddressButtonClick(_ sender: UIButton) {
+        let alertVC = UIAlertController(title: "Add address", message: nil, preferredStyle: .alert)
+        alertVC.addTextField { (textField) in
+            print("Text field")
+        }
+        
+        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            if let textFieild = alertVC.textFields?.first {
+                //reverse geocode to the address
+                self.reverseGeocode(address: textFieild.text)
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            print("Cancel")
+        }
+        
+        alertVC.addAction(okAction)
+        alertVC.addAction(cancelAction)
+        
+        self.present(alertVC, animated: true, completion: nil)
+    }
+    
+    private func reverseGeocode(address: String?) {
+        
+        guard let addr = address else {
+            print("No address!")
+            return
+        }
 
+        print(addr)
+        
+        let geoCoder = CLGeocoder()
+        
+        geoCoder.geocodeAddressString(addr) { (placeMarks, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            guard let places = placeMarks, let placeMark = places.first else {
+                print("No placemark!")
+                return
+            }
+            
+            self.addPlacemarkToMap(placeMark: placeMark, title: addr)
+            
+        }
+    }
+    
+    private func addPlacemarkToMap(placeMark: CLPlacemark, title: String) {
+        
+        guard let coordinate = placeMark.location?.coordinate else { return }
+        let annotation = CustomAnnotation()
+        annotation.coordinate = coordinate
+        //CLLocationCoordinate2D(latitude: 55.7525497882909, longitude: 37.6231188699603)
+        
+        annotation.title = title
+//        annotation.subtitle = "Kremlin"
+        annotation.imageURL = "custom_geotag"
+        self.mapView.addAnnotation(annotation)
+    }
+    
+}

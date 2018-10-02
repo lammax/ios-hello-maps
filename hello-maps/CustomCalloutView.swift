@@ -45,7 +45,7 @@ class CustomCalloutView: UIView {
         let titleLabel = UILabel(frame: CGRect.zero)
         titleLabel.textColor = UIColor.white
         titleLabel.text = self.annotation.title
-        print(titleLabel.text)
+        print(titleLabel.text ?? "")
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(titleLabel)
