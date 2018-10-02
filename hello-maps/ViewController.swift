@@ -128,7 +128,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
             if let textFieild = alertVC.textFields?.first {
                 //reverse geocode to the address
-                self.reverseGeocode(address: textFieild.text)
+                self.reverseGeocode(address: textFieild.text, completion: { (placeMark) in
+                    let destinationMapItem = MKMapItem(placemark: MKPlacemark(coordinate: (placeMark.location?.coordinate)!))
+                    MKMapItem.openMaps(with: [destinationMapItem], launchOptions: nil)
+                })
             }
         }
         
@@ -142,7 +145,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         self.present(alertVC, animated: true, completion: nil)
     }
     
-    private func reverseGeocode(address: String?) {
+    private func reverseGeocode(address: String?, completion: @escaping (CLPlacemark) -> ()) {
         
         guard let addr = address else {
             print("No address!")
@@ -165,6 +168,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             }
             
             self.addPointOfInterest(coordinate: placeMark.location?.coordinate, title: addr)
+            
+            //move to address
+            self.mapView.setRegion(
+                MKCoordinateRegion(center: (placeMark.location?.coordinate)!, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)),
+                animated: true
+            )
+
+            
+            completion(placeMark)
             
         }
     }
