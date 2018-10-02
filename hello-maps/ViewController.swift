@@ -37,6 +37,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
         
         self.mapTypeControl.addTarget(self, action: #selector(mapTypeChange), for: .valueChanged)
         
+        self.addPointOfInterest()
+        
     }
     
     @objc func mapTypeChange(segmentedControl: UISegmentedControl) {
@@ -52,6 +54,14 @@ class ViewController: UIViewController, MKMapViewDelegate {
             self.mapView.mapType = .standard
         }
         
+    }
+    
+    private func addPointOfInterest() {
+        self.mapView.addAnnotation(
+            CustomAnnotation(
+                title: "Somewhere in USA",
+                coordinate: CLLocationCoordinate2D(latitude: 37.334395, longitude: -122.040012))
+        )
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -100,14 +110,14 @@ class ViewController: UIViewController, MKMapViewDelegate {
     }*/
 
     @IBAction func addAnnotationClick(_ sender: UIButton) {
-        let annotation = CustomAnnotation()
-        annotation.coordinate = self.mapView.userLocation.coordinate
-            //CLLocationCoordinate2D(latitude: 55.7525497882909, longitude: 37.6231188699603)
-            
-        annotation.title = "Moscow"
-        annotation.subtitle = "Kremlin"
-        annotation.imageURL = "custom_geotag"
-        self.mapView.addAnnotation(annotation)
+        //CLLocationCoordinate2D(latitude: 55.7525497882909, longitude: 37.6231188699603)
+        self.mapView.addAnnotation(
+            CustomAnnotation(
+                title: "Moscow",
+                subtitle: "Kremlin",
+                coordinate: self.mapView.userLocation.coordinate
+            )
+        )
     }
     
     @IBAction func addAddressButtonClick(_ sender: UIButton) {
@@ -161,16 +171,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func addPlacemarkToMap(placeMark: CLPlacemark, title: String) {
-        
         guard let coordinate = placeMark.location?.coordinate else { return }
-        let annotation = CustomAnnotation()
-        annotation.coordinate = coordinate
-        //CLLocationCoordinate2D(latitude: 55.7525497882909, longitude: 37.6231188699603)
-        
-        annotation.title = title
-//        annotation.subtitle = "Kremlin"
-        annotation.imageURL = "custom_geotag"
-        self.mapView.addAnnotation(annotation)
+        self.mapView.addAnnotation(CustomAnnotation(title: title, coordinate: coordinate))
     }
     
 }

@@ -25,16 +25,11 @@ class CustomCalloutView: UIView {
         self.layer.masksToBounds = true
         self.backgroundColor = UIColor(displayP3Red: 55/255, green: 152/255, blue: 219/255, alpha: 1.0)
 
-        self.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        self.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        
         addTitle()
     }
     
     func add(to view: UIView) {
         view.addSubview(self)
-        self.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        self.heightAnchor.constraint(equalToConstant: 80).isActive = true
         self.bottomAnchor.constraint(equalTo: view.topAnchor, constant: -5) .isActive = true
         self.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 
@@ -45,14 +40,18 @@ class CustomCalloutView: UIView {
         let titleLabel = UILabel(frame: CGRect.zero)
         titleLabel.textColor = UIColor.white
         titleLabel.text = self.annotation.title
-        print(titleLabel.text ?? "")
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+        titleLabel.sizeToFit()
+
+        let labelSize = titleLabel.frame.size
+        self.widthAnchor.constraint(equalToConstant: labelSize.width).isActive = true
+        self.heightAnchor.constraint(equalToConstant: labelSize.height).isActive = true
+
         self.addSubview(titleLabel)
 
         titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
