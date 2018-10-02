@@ -8,33 +8,29 @@
 
 import UIKit
 import MapKit
-//import CoreLocation
+import CoreLocation
 
 
 
-class ViewController: UIViewController, MKMapViewDelegate {
+class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var mapTypeControl: UISegmentedControl!
     @IBOutlet weak var mapView: MKMapView!
-    //private let locationManager = CLLocationManager()
+    private let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //TODO - make automatical compas positioning 2D/ I'd like to rotate map according to compas.
         // Do any additional setup after loading the view, typically from a nib.
         
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter =  kCLDistanceFilterNone
+        locationManager.startUpdatingLocation()
+
         self.mapView.delegate = self
-        
-//        locationManager.delegate = self
-//        locationManager.requestWhenInUseAuthorization()
-//
-//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        locationManager.distanceFilter =  kCLDistanceFilterNone
-//
-//        locationManager.startUpdatingLocation()
-//
         self.mapView.showsUserLocation = true
-        
         self.mapTypeControl.addTarget(self, action: #selector(mapTypeChange), for: .valueChanged)
         
     }
@@ -181,11 +177,39 @@ class ViewController: UIViewController, MKMapViewDelegate {
         
         self.mapView.addAnnotation(annotation)
         
+        //start to monitor region
+        //add region for monitoring
+        let region = CLCircularRegion(center: annotation.coordinate, radius: 500.0, identifier: "Region1")
+        region.notifyOnEntry = true
+        region.notifyOnExit = true
+        
         addFancyRegion(annotation: annotation)
+        
+        self.locationManager.startMonitoring(for: region)
+        
     }
     
     private func addFancyRegion(annotation: CustomAnnotation) {
-        self.mapView.addOverlay(MKCircle(center: annotation.coordinate, radius: 1000)) //1000 meters
+        self.mapView.addOverlay(MKCircle(center: annotation.coordinate, radius: 500)) //1000 meters
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        popOKAlert(title: "Enter region \(region.identifier)")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        popOKAlert(title: "Exit region \(region.identifier)")
+    }
+    
+    private func popOKAlert(title: String?) {
+        let alertVC = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+        }
+        
+        alertVC.addAction(okAction)
+        
+        self.present(alertVC, animated: true, completion: nil)
     }
     
 }
