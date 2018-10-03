@@ -129,8 +129,34 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             if let textFieild = alertVC.textFields?.first {
                 //reverse geocode to the address
                 self.reverseGeocode(address: textFieild.text, completion: { (placeMark) in
+                    let startingMapItem = MKMapItem.forCurrentLocation()
                     let destinationMapItem = MKMapItem(placemark: MKPlacemark(coordinate: (placeMark.location?.coordinate)!))
-                    MKMapItem.openMaps(with: [destinationMapItem], launchOptions: nil)
+                    //MKMapItem.openMaps(with: [destinationMapItem], launchOptions: nil) //opens Apple navigator app
+                    
+                    let directionsRequest = MKDirections.Request()
+                    directionsRequest.transportType = .automobile
+                    directionsRequest.source = startingMapItem
+                    directionsRequest.destination = destinationMapItem
+                    
+                    let directions = MKDirections(request: directionsRequest)
+                    directions.calculate(completionHandler: { (response, error) in
+                        if let error = error {
+                            print(error.localizedDescription)
+                            return
+                        }
+                        
+                        guard let response = response, let route = response.routes.first else { return }
+                        
+                        if route.steps.isEmpty {
+                            print("No steps in route")
+                        } else {
+                            for step in route.steps {
+                                print(step.instructions)
+                            }
+                        }
+                        
+                    })
+                    
                 })
             }
         }
@@ -174,7 +200,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 MKCoordinateRegion(center: (placeMark.location?.coordinate)!, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)),
                 animated: true
             )
-
             
             completion(placeMark)
             
