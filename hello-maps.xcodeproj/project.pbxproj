@@ -14,6 +14,7 @@
 		047E610A216249F7009B53AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 047E6108216249F7009B53AC /* LaunchScreen.storyboard */; };
 		047E611221625DCA009B53AC /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E611121625DCA009B53AC /* CustomAnnotation.swift */; };
 		047E61142163806F009B53AC /* CustomCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E61132163806F009B53AC /* CustomCalloutView.swift */; };
+		047E6116216499E6009B53AC /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E6115216499E6009B53AC /* TableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		047E610B216249F7009B53AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		047E611121625DCA009B53AC /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		047E61132163806F009B53AC /* CustomCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalloutView.swift; sourceTree = "<group>"; };
+		047E6115216499E6009B53AC /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				047E610B216249F7009B53AC /* Info.plist */,
 				047E611121625DCA009B53AC /* CustomAnnotation.swift */,
 				047E61132163806F009B53AC /* CustomCalloutView.swift */,
+				047E6115216499E6009B53AC /* TableViewController.swift */,
 			);
 			path = "hello-maps";
 			sourceTree = "<group>";
@@ -144,6 +147,7 @@
 				047E61142163806F009B53AC /* CustomCalloutView.swift in Sources */,
 				047E6102216249F4009B53AC /* ViewController.swift in Sources */,
 				047E6100216249F4009B53AC /* AppDelegate.swift in Sources */,
+				047E6116216499E6009B53AC /* TableViewController.swift in Sources */,
 				047E611221625DCA009B53AC /* CustomAnnotation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

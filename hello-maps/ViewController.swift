@@ -18,6 +18,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var mapView: MKMapView!
     private let locationManager = CLLocationManager()
     
+    private var directionSteps: [MKRoute.Step] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //TODO - make automatical compas positioning 2D/ I'd like to rotate map according to compas.
@@ -150,9 +152,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                         if route.steps.isEmpty {
                             print("No steps in route")
                         } else {
-                            for step in route.steps {
-                                print(step.instructions)
-                            }
+                            self.directionSteps = route.steps
                         }
                         
                     })
@@ -169,6 +169,17 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         alertVC.addAction(cancelAction)
         
         self.present(alertVC, animated: true, completion: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier! == "showDirectionsTable" {
+            let destinationVC = segue.destination as! TableViewController
+            destinationVC.delegate = self
+        }
+    }
+    
+    @IBAction func directionsButtonClick(_ sender: UIButton) {
+        performSegue(withIdentifier: "showDirectionsTable", sender: self)
     }
     
     private func reverseGeocode(address: String?, completion: @escaping (CLPlacemark) -> ()) {
@@ -249,4 +260,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         self.present(alertVC, animated: true, completion: nil)
     }
     
+}
+
+extension ViewController: DirectionsTableDelegate {
+    func getDirectionSteps() -> [MKRoute.Step] {
+        return self.directionSteps
+    }
 }

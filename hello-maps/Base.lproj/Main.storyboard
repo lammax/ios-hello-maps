@@ -12,7 +12,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="hello_maps" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" id="BYZ-38-t0r" customClass="ViewController" customModule="hello_maps" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -43,15 +43,25 @@
                                     <action selector="addAddressButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ErQ-Pr-ept"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="euH-xI-N7X">
+                                <rect key="frame" x="12" y="20" width="70" height="30"/>
+                                <state key="normal" title="Directions"/>
+                                <connections>
+                                    <action selector="directionsButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Odz-Yt-BUr"/>
+                                    <segue destination="5lT-e3-qf3" kind="presentation" identifier="showDirectionsTable" id="2RY-I9-4Dv"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="ds0-Vi-Qso" firstAttribute="top" secondItem="HmT-C9-3oC" secondAttribute="top" id="4FV-II-afn"/>
                             <constraint firstItem="HmT-C9-3oC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="4KP-40-5bh"/>
                             <constraint firstItem="ek2-Ga-Hdz" firstAttribute="centerX" secondItem="HmT-C9-3oC" secondAttribute="centerX" id="D1m-b6-bFT"/>
+                            <constraint firstItem="euH-xI-N7X" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="12" id="Fkm-Iz-IwZ"/>
                             <constraint firstItem="ek2-Ga-Hdz" firstAttribute="bottom" secondItem="HmT-C9-3oC" secondAttribute="bottom" id="H3f-js-7WY"/>
                             <constraint firstItem="ds0-Vi-Qso" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="90" id="Ila-Id-4tH"/>
                             <constraint firstItem="xMi-hz-Jcr" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="XEA-mY-vi1"/>
+                            <constraint firstItem="euH-xI-N7X" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="eaw-iY-Thz"/>
                             <constraint firstAttribute="trailing" secondItem="HmT-C9-3oC" secondAttribute="trailing" id="g9B-B3-c4b"/>
                             <constraint firstItem="HmT-C9-3oC" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="j4a-zY-85G"/>
                             <constraint firstItem="HmT-C9-3oC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="m9h-7B-Dkd"/>
@@ -68,6 +78,42 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
+        </scene>
+        <!--Table View Controller-->
+        <scene sceneID="xU4-Uk-24a">
+            <objects>
+                <tableViewController storyboardIdentifier="TableViewController" id="5lT-e3-qf3" customClass="TableViewController" customModule="hello_maps" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ca4-7a-Sbt">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <button key="tableHeaderView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="946-bg-cJI">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Back"/>
+                            <connections>
+                                <action selector="backButtonClick:" destination="5lT-e3-qf3" eventType="touchUpInside" id="5Jq-PW-XKC"/>
+                            </connections>
+                        </button>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellStepInstruction" id="Gqq-XB-EjF">
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gqq-XB-EjF" id="X1q-ps-KQ4">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="5lT-e3-qf3" id="KO6-8z-gNd"/>
+                            <outlet property="delegate" destination="5lT-e3-qf3" id="leN-RO-wpb"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="F2E-GB-6PU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="863" y="134"/>
         </scene>
     </scenes>
 </document>
