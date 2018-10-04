@@ -116,6 +116,55 @@ class ViewController: UIViewController {
         self.present(alertVC, animated: true, completion: nil)
     }
     
+    @IBAction func searchPOIButtonClick(_ sender: UIButton) {
+        let alertVC = UIAlertController(title: "Search POI", message: nil, preferredStyle: .alert)
+        alertVC.addTextField { (textField) in
+            print("Text field")
+        }
+        
+        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            if let textField = alertVC.textFields?.first, let search = textField.text {
+                    self.findNearbyPOI(by: search)
+                
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            print("Cancel")
+        }
+        
+        alertVC.addAction(okAction)
+        alertVC.addAction(cancelAction)
+        
+        self.present(alertVC, animated: true, completion: nil)
+    }
+
+    private func findNearbyPOI(by searchTerm : String?) {
+        
+        //TODO: make detach function
+        self.mapView.removeAnnotations(self.mapView.annotations) //clear annotations
+        self.mapView.removeOverlays(self.mapView.overlays) //clear overlays
+        
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = searchTerm
+        request.region = self.mapView.region
+        
+        let search = MKLocalSearch(request: request)
+        search.start { (response, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            guard let response = response else { return }
+            
+            for item in response.mapItems {
+                self.addPointOfInterest(coordinate: item.placemark.coordinate, title: "\(searchTerm!): \(item.placemark.name!)")
+            }
+        }
+        
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier! == "showDirectionsTable" {
             let destinationVC = segue.destination as! TableViewController
@@ -172,7 +221,7 @@ class ViewController: UIViewController {
         
         //start to monitor region
         //add region for monitoring
-        let region = CLCircularRegion(center: annotation.coordinate, radius: 1000.0, identifier: "Region1")
+        let region = CLCircularRegion(center: annotation.coordinate, radius: 100.0, identifier: title!)
         region.notifyOnEntry = true
         region.notifyOnExit = true
         
@@ -183,7 +232,7 @@ class ViewController: UIViewController {
     }
     
     private func addFancyRegion(annotation: CustomAnnotation) {
-        self.mapView.addOverlay(MKCircle(center: annotation.coordinate, radius: 1000)) //1000 meters
+        self.mapView.addOverlay(MKCircle(center: annotation.coordinate, radius: 100)) //1000 meters
     }
     
     private func popOKAlert(title: String?) {
